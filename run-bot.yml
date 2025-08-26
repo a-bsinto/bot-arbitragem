@@ -1,0 +1,29 @@
+name: Run Arbitrage Bot
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  run-arbitrage:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run bot script
+      run: node index.js
+      env:
+        BOT_PRIVATE_KEY: ${{ secrets.BOT_PRIVATE_KEY }}
+        ALCHEMY_URL: ${{ secrets.ALCHEMY_URL }}
+        CONTRACT_ADDRESS: ${{ secrets.CONTRACT_ADDRESS }}
