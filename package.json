@@ -1,0 +1,14 @@
+{
+  "name": "hunter-bot",
+  "version": "1.0.0",
+  "description": "Um bot de arbitragem com flash loans para a rede Polygon.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ethers": "5.7.2"
+  }
+}

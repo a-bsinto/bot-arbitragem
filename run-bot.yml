@@ -1,0 +1,41 @@
+# Nome do nosso workflow (pode ser qualquer coisa)
+name: Run Arbitrage Bot
+
+# Define quando o workflow deve ser executado
+on:
+  schedule:
+    # Corre a cada 5 minutos. Este é o intervalo mínimo no GitHub Actions.
+    - cron: '*/5 * * * *'
+  # Permite também que você o execute manualmente a partir do separador "Actions"
+  workflow_dispatch:
+
+# Define os "trabalhos" a serem feitos
+jobs:
+  run-arbitrage:
+    # Corre num servidor virtual com o sistema operativo Ubuntu mais recente
+    runs-on: ubuntu-latest
+
+    # Define os passos a serem executados
+    steps:
+    # Passo 1: Faz o "download" do seu código do repositório para o servidor virtual
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Passo 2: Configura o ambiente Node.js na versão 18
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    # Passo 3: Instala as dependências (ethers) a partir do package.json
+    - name: Install dependencies
+      run: npm install
+
+    # Passo 4: Executa o seu script do bot!
+    - name: Run bot script
+      run: node index.js
+      env:
+        # Mapeia os "Secrets" do GitHub para variáveis de ambiente que o index.js consegue ler
+        BOT_PRIVATE_KEY: ${{ secrets.BOT_PRIVATE_KEY }}
+        ALCHEMY_URL: ${{ secrets.ALCHEMY_URL }}
+        CONTRACT_ADDRESS: ${{ secrets.CONTRACT_ADDRESS }}
